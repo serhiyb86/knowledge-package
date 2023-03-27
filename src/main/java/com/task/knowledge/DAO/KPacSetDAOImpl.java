@@ -1,7 +1,6 @@
 package com.task.knowledge.DAO;
 
 import com.task.knowledge.model.KPacSet;
-import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -29,7 +28,7 @@ public class KPacSetDAOImpl implements KPacSetDAO {
             ResultSet rs = st.executeQuery(KPAC_SET_GET_QUERY);
             while (rs.next()) {
                 KPacSet set = new KPacSet();
-                set.setId(rs.getLong("id"));
+                set.setSetId(rs.getLong("id"));
                 set.setTitle(rs.getString("title"));
                 sets.add(set);
             }
@@ -52,7 +51,7 @@ public class KPacSetDAOImpl implements KPacSetDAO {
             ResultSet rs = st.executeQuery();
             KPacSet set = new KPacSet();
             while (rs.next()) {
-                set.setId(rs.getLong("id"));
+                set.setSetId(rs.getLong("id"));
                 set.setTitle(rs.getString("title"));
             }
             return set;
@@ -63,7 +62,13 @@ public class KPacSetDAOImpl implements KPacSetDAO {
     }
 
     @Override
+    public boolean deleteSet(long setId) {
+        return false;
+    }
+
+    @Override
     public KPacSet createSet(KPacSet kPacSet) {
+        //todo create with kpacs
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(KPAC_SET_CREATE_QUERY, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, kPacSet.getTitle());
@@ -74,7 +79,7 @@ public class KPacSetDAOImpl implements KPacSetDAO {
             System.out.println(i + " rows was/were created.");
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    kPacSet.setId(generatedKeys.getLong(1));
+                    kPacSet.setSetId(generatedKeys.getLong(1));
                     return kPacSet;
                 } else {
                     throw new SQLException("Creating kPacSets failed, no ID obtained.");

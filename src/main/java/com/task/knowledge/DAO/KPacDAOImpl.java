@@ -5,7 +5,6 @@ import com.task.knowledge.model.DTO.ListKPacsForSetDTOObject;
 import com.task.knowledge.model.KPac;
 import com.task.knowledge.model.KPacSet;
 import com.task.knowledge.util.DateSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -28,7 +27,7 @@ public class KPacDAOImpl implements KPacDAO {
             "on kpac_set_relation.sets=kpac_set.id where kpac_set.id=?";
 
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
 
     public KPacDAOImpl(DataSource dataSource) {
@@ -51,7 +50,7 @@ public class KPacDAOImpl implements KPacDAO {
                 kPacs.add(kPac);
             }
         } catch (SQLException e) {
-            System.out.println("Exception during retrieving kpacs..");
+            System.err.println("Exception during retrieving kpacs..");
         }
         return kPacs;
     }
@@ -74,7 +73,7 @@ public class KPacDAOImpl implements KPacDAO {
                 kPacs.add(kPac);
                 kPacSet.setTitle(rs.getString("set_title"));
             }
-            kPacSet.setId(setId);
+            kPacSet.setSetId(setId);
             kpacDTO.setkPacSet(kPacSet);
             kpacDTO.setkPacs(kPacs);
             return kpacDTO;

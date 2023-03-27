@@ -9,4 +9,5 @@ public interface KPacSetDAO {
     List<KPacSet> setsByKpacId(long kpacId);
     KPacSet createSet(KPacSet kPacSet);
     KPacSet setById(long setId);
+    boolean deleteSet(long setId);
 }

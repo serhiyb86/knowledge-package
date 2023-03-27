@@ -1,16 +1,12 @@
 package com.task.knowledge.controller;
 
-import com.mysql.cj.xdevapi.JsonArray;
 import com.task.knowledge.DAO.KPacDAO;
 import com.task.knowledge.DAO.KPacSetDAO;
-import com.task.knowledge.model.DTO.KPacDTOCreateObject;
 import com.task.knowledge.model.DTO.ListKPacsForSetDTOObject;
 import com.task.knowledge.model.KPac;
 import com.task.knowledge.model.KPacSet;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +21,6 @@ public class KPacController {
     @Autowired
     private KPacSetDAO kPacSetDAO;
 
-//    @RequestMapping(value = "/")
-//    public ModelAndView listContact(ModelAndView model) {
-////        List<Contact> listContact = contactDAO.list();
-////        model.addObject("listContact", listContact);
-//        model.setViewName("home");
-//        return model;
-//    }
 
     @RequestMapping(value = "/kpacs")
     public ModelAndView listKPacs(ModelAndView model) {
@@ -52,10 +41,19 @@ public class KPacController {
             return ResponseEntity.status(205).build();
     }
 
+    @DeleteMapping(value = "/set")
+    public ResponseEntity deleteKPacSet(@RequestParam String setId) {
+        System.out.println("Deleting set ID: " + setId);
+        if (kPacSetDAO.deleteSet(Long.parseLong(setId)))
+            return ResponseEntity.status(204).build();
+        else
+            return ResponseEntity.status(205).build();
+    }
+
     @RequestMapping(value = "/sets")
     public ModelAndView listSets(ModelAndView model) {
         List<KPacSet> sets = kPacSetDAO.setsAll();
-        model.addObject("sets", sets);
+        model.addObject("sets", new JSONArray(sets));
         model.setViewName("sets");
         return model;
     }
@@ -65,7 +63,7 @@ public class KPacController {
         System.out.println("kpacs by  was called");
         ListKPacsForSetDTOObject kPacs = kPacDAO.kpacsBySetId(Long.parseLong(id));
         model.addObject("kpacs", new JSONArray(kPacs.getkPacs()));
-        model.addObject("setId", kPacs.getkPacSet().getId());
+        model.addObject("setId", kPacs.getkPacSet().getSetId());
         model.addObject("setTitle", kPacs.getkPacSet().getTitle());
         model.setViewName("kpacs");
         return model;

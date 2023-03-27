@@ -102,16 +102,7 @@ public class KPacDAOImplTest {
 //            jsonArray..put(jsonObject)
 //            System.out.println(kPac);
 //        }
-        JSONArray ja = new JSONArray();
-        ja.put(Boolean.TRUE);
-        ja.put("lorem ipsum");
 
-        JSONObject jo = new JSONObject();
-        jo.put("name", "jon doe");
-        jo.put("age", "22");
-        jo.put("city", "chicago");
-
-        ja.put(jo);
 
     }
 //

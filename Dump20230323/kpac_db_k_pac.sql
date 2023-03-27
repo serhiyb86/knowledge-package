@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `k_pac`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `k_pac` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL auto_increment,
   `title` varchar(250) CHARACTER SET utf8 DEFAULT NULL,
   `description` varchar(2000) CHARACTER SET utf8 DEFAULT NULL,
   `creation_date` date DEFAULT NULL,

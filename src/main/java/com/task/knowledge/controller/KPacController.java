@@ -1,24 +1,75 @@
 package com.task.knowledge.controller;
 
+import com.mysql.cj.xdevapi.JsonArray;
+import com.task.knowledge.DAO.KPacDAO;
+import com.task.knowledge.DAO.KPacSetDAO;
+import com.task.knowledge.model.DTO.KPacDTOCreateObject;
+import com.task.knowledge.model.DTO.ListKPacsForSetDTOObject;
+import com.task.knowledge.model.KPac;
+import com.task.knowledge.model.KPacSet;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class KPacController {
-    @RequestMapping(value="/")
-    public ModelAndView listContact(ModelAndView model){
-//        List<Contact> listContact = contactDAO.list();
-//        model.addObject("listContact", listContact);
-        model.setViewName("home");
-        return model;
-    }
+    @Autowired
+    private KPacDAO kPacDAO;
+    @Autowired
+    private KPacSetDAO kPacSetDAO;
 
-    @RequestMapping(value="/kpacs")
-    public ModelAndView listKPacs(ModelAndView model){
-//        List<Contact> listContact = contactDAO.list();
-//        model.addObject("listContact", listContact);
+//    @RequestMapping(value = "/")
+//    public ModelAndView listContact(ModelAndView model) {
+////        List<Contact> listContact = contactDAO.list();
+////        model.addObject("listContact", listContact);
+//        model.setViewName("home");
+//        return model;
+//    }
+
+    @RequestMapping(value = "/kpacs")
+    public ModelAndView listKPacs(ModelAndView model) {
+        System.out.println("kpacs was called");
+        List<KPac> kPacs = kPacDAO.kpacsAll();
+        System.out.println(kPacs);
+        model.addObject("kpacs", new JSONArray(kPacs));
         model.setViewName("kpacs");
         return model;
     }
+
+    @DeleteMapping(value = "/kpac")
+    public ResponseEntity deleteKPac(@RequestParam String kpacId) {
+        System.out.println("Deleting kpac ID: " + kpacId);
+        if (kPacDAO.deleteKPac(Long.parseLong(kpacId)))
+            return ResponseEntity.status(204).build();
+        else
+            return ResponseEntity.status(205).build();
+    }
+
+    @RequestMapping(value = "/sets")
+    public ModelAndView listSets(ModelAndView model) {
+        List<KPacSet> sets = kPacSetDAO.setsAll();
+        model.addObject("sets", sets);
+        model.setViewName("sets");
+        return model;
+    }
+
+    @RequestMapping(value = "/set/{id}")
+    public ModelAndView listKPacsBySetId(ModelAndView model, @PathVariable String id) {
+        System.out.println("kpacs by  was called");
+        ListKPacsForSetDTOObject kPacs = kPacDAO.kpacsBySetId(Long.parseLong(id));
+        model.addObject("kpacs", new JSONArray(kPacs.getkPacs()));
+        model.addObject("setId", kPacs.getkPacSet().getId());
+        model.addObject("setTitle", kPacs.getkPacSet().getTitle());
+        model.setViewName("kpacs");
+        return model;
+    }
+
+
 }

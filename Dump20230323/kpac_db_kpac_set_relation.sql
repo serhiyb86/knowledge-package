@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `kpac_set_relation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `kpac_set_relation` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL auto_increment,
   `kpacs` bigint(20) DEFAULT NULL,
   `sets` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),

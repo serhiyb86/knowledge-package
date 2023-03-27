@@ -23,8 +23,8 @@ DROP TABLE IF EXISTS `kpac_set`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `kpac_set` (
-  `id` bigint(20) NOT NULL,
-  `title` varchar(250) DEFAULT NULL,
+  `id` bigint(20) NOT NULL auto_increment,
+  `title` varchar(250) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
